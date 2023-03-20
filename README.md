@@ -1,6 +1,6 @@
 # flutter_bloc_architecture_app_template
 
-A new Flutter project.
+Flutter Template App with BloC Pattern fur quick development start.
 
 ## Getting Started
 
