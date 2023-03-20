@@ -1,0 +1,1 @@
+//use quicktype.io for automatic model generation (better using retrofit instead of whole thing)
