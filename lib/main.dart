@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_architecture_app_template/features/example/bloc/example_bloc.dart';
-import 'package:flutter_bloc_architecture_app_template/features/example/pages/example_page.dart';
+import 'package:flutter_bloc_architecture_app_template/core/network/network.dart';
+import 'package:flutter_bloc_architecture_app_template/core/ui/ui.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_bloc_architecture_app_template/generated/l10n.dart';
-import 'package:flutter_bloc_architecture_app_template/network/dio_client.dart';
-import 'package:flutter_bloc_architecture_app_template/ui/res.dart';
+
+//* features
+import 'package:flutter_bloc_architecture_app_template/features/features.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,23 +25,27 @@ class MyApp extends StatelessWidget {
       supportedLocales: S.delegate.supportedLocales,
       theme: appLightTheme,
       darkTheme: appDarkTheme,
-      //TODO: specify theme
       themeMode: ThemeMode.system,
       home: MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
             create: (context) => DioClient(),
           ),
+          RepositoryProvider(
+            create: (context) => ExampleRepo(
+              dio: RepositoryProvider.of<DioClient>(context).dio,
+            ),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
             BlocProvider(
               create: (context) => ExampleBloc(
-                  // repo: RepositoryProvider.of<ExampleRepo>(context),
-                  ),
+                repo: RepositoryProvider.of<ExampleRepo>(context),
+              ),
             ),
           ],
-          child: const ExamplePage(),
+          child: const Scaffold(),
         ),
       ),
     );
