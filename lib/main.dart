@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ],
-          child: const Scaffold(),
+          child: const ExamplePage(),
         ),
       ),
     );

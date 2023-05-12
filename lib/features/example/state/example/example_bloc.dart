@@ -10,8 +10,16 @@ part 'example_state.dart';
 
 class ExampleBloc extends Bloc<ExampleEvent, ExampleState> {
   ExampleBloc({required this.repo}) : super(ExampleInitial()) {
-    on<ExampleEvent>((event, emit) {
-      // TODO: implement event handler
+    on<DoExampleEvent>((event, emit) async {
+      emit(ExampleLoading());
+      final model = await repo.doExampleRequest(
+        model: event.model,
+      );
+      try {
+        emit(ExampleSuccess(model: model));
+      } catch (e) {
+        emit(ExampleError(model: model));
+      }
     });
   }
   final ExampleRepo repo;

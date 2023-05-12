@@ -6,16 +6,23 @@ class ExampleRepo {
 
   final Dio dio;
 
-  Future<ExampleResponseModel> remind({
+  Future doExampleRequest({
     required ExampleRequestModel model,
   }) async {
     final Response response = await dio.post(
       Endpoints.example,
       data: model.toJson(),
     );
-    final ExampleResponseModel result = ExampleResponseModel.fromJson(
-      response.data,
-    );
-    return result;
+    try {
+      final ExampleResponseModel result = ExampleResponseModel.fromJson(
+        response.data,
+      );
+      return result;
+    } catch (e) {
+      final ExampleErrorModel errorResult = ExampleErrorModel.fromJson(
+        response.data,
+      );
+      return errorResult;
+    }
   }
 }
