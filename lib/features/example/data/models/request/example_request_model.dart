@@ -1,28 +1,36 @@
-// To parse this JSON data, do
-//
-//     final exampleRequestModel = exampleRequestModelFromJson(jsonString);
-
 import 'dart:convert';
-
-ExampleRequestModel exampleRequestModelFromJson(String str) =>
-    ExampleRequestModel.fromJson(json.decode(str));
-
-String exampleRequestModelToJson(ExampleRequestModel data) =>
-    json.encode(data.toJson());
 
 class ExampleRequestModel {
   final String? example;
+  final String? other;
 
   ExampleRequestModel({
     this.example,
+    this.other,
   });
 
-  factory ExampleRequestModel.fromJson(Map<String, dynamic> json) =>
+  ExampleRequestModel copyWith({
+    String? example,
+    String? other,
+  }) =>
       ExampleRequestModel(
-        example: json["example"],
+        example: example ?? this.example,
+        other: other ?? this.other,
       );
 
-  Map<String, dynamic> toJson() => {
-        "example": example,
+  factory ExampleRequestModel.fromJson(String str) =>
+      ExampleRequestModel.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
+
+  factory ExampleRequestModel.fromMap(Map<String, dynamic> json) =>
+      ExampleRequestModel(
+        example: json["example"],
+        other: json["other"],
+      );
+
+  Map<String, dynamic> toMap() => {
+        if (example != null) "example": example,
+        if (other != null) "other": other,
       };
 }

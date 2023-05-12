@@ -13,39 +13,39 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Bloc Pattern Architecture Template',
-      showSemanticsDebugger: false,
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      theme: appLightTheme,
-      darkTheme: appDarkTheme,
-      themeMode: ThemeMode.system,
-      home: MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider(
-            create: (context) => DioClient(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => DioClient(),
+        ),
+        RepositoryProvider(
+          create: (context) => ExampleRepo(
+            dio: RepositoryProvider.of<DioClient>(context).dio,
           ),
-          RepositoryProvider(
-            create: (context) => ExampleRepo(
-              dio: RepositoryProvider.of<DioClient>(context).dio,
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ExampleBloc(
+              repo: RepositoryProvider.of<ExampleRepo>(context),
             ),
           ),
         ],
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => ExampleBloc(
-                repo: RepositoryProvider.of<ExampleRepo>(context),
-              ),
-            ),
+        child: MaterialApp(
+          title: 'Flutter Bloc Pattern Architecture Template',
+          showSemanticsDebugger: false,
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
           ],
-          child: const ExamplePage(),
+          supportedLocales: S.delegate.supportedLocales,
+          theme: appLightTheme,
+          darkTheme: appDarkTheme,
+          themeMode: ThemeMode.system,
+          home: const ExamplePage(),
         ),
       ),
     );
